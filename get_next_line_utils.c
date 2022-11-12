@@ -6,7 +6,7 @@
 /*   By: lagonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:32:01 by lagonzal          #+#    #+#             */
-/*   Updated: 2022/11/12 14:29:26 by lagonzal         ###   ########.fr       */
+/*   Updated: 2022/11/12 18:50:57 by lagonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ char	*ft_strcat(char *s1, char *s2)
 	char	*s3;
 	size_t	len1;
 	size_t	len2;
-	size_t	n;
-	size_t	m;
+	int		n;
+	int		m;
 
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
@@ -61,14 +61,13 @@ char	*ft_strjoin(char *s1, char *s2)
 		s1 = malloc(1 * sizeof(char));
 		s1[0] = '\0';
 	}
-	if (!s1 || !s2)
-		return (NULL);
-	if (s2[0] == '\0')
-		return(s1);
+	if (!s2)
+		return (free(s1),NULL);
 	s3 = ft_strcat(s1, s2);
 	free(s1);
 	if (!s3)
 		return (NULL);
+	//printf("first: %s\n", s3);
 	return (s3);
 }
 

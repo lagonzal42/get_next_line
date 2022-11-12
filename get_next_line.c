@@ -6,30 +6,25 @@
 /*   By: lagonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:13:06 by lagonzal          #+#    #+#             */
-/*   Updated: 2022/11/12 15:20:01 by lagonzal         ###   ########.fr       */
+/*   Updated: 2022/11/12 18:39:11 by lagonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <fcntl.h>
 
-void	*ft_free_n_null(void *ptr)
-{
-	free(ptr);
-	return(NULL);
-}
-
-int	ft_strchr(char *s, int c)
+int	ft_strchr(char *s, char c)
 {
 	int	n;
 
 	n = 0;
 	if (!s)
 		return (-1);
-	while (s[n] != (char)c && s[n])
+	while (s[n] != c && s[n] != '\0')
 		n++;
-	if (s[n] == (char)c)
+	if (s[n] == c)
 		return (n);
-	return (-1);
+	return(-1);
 }
 
 char	*ft_read_file(int fd, char *left)
@@ -46,24 +41,19 @@ char	*ft_read_file(int fd, char *left)
 	while (readed > 0 && pos == -1)
 	{
 		readed = read(fd, reader, BUFFER_SIZE);
+		if (readed == -1)
+			return (free(reader), NULL);
 		if (readed == 0)
 			break;
-		if (readed == -1)
-		{
-			free(reader);
-			return (NULL);
-		}
 		reader[readed] = '\0';
 		left = ft_strjoin(left, reader);
 		if (!left)
-		{
-			free(reader);
-			return (NULL);
-		}
+			return (free(reader), NULL);
 		pos = ft_strchr(left, '\n');
+		printf("pos is:%s\n", left);
+		//printf("pos is:%d\n", pos);
 	}
-	free(reader);
-	return(left);
+	return(free(reader), left);
 }
 
 char	*ft_depurate(char *left, int pos_lb)
@@ -71,13 +61,9 @@ char	*ft_depurate(char *left, int pos_lb)
 	char	*dep;
 	
 	if (ft_strlen(&left[pos_lb]) == 0)
-	{	
-		free(left);
-		return (NULL);
-	}
+		return (free(left), NULL);
 	dep = ft_strdup(&left[pos_lb]);
-	free(left);
-	return (NULL);
+	return (free(left), dep);
 }
 char	*get_next_line(int fd)
 {
@@ -105,4 +91,12 @@ char	*get_next_line(int fd)
 	ret = ft_strcpy(left, pos + 2);
 	left = ft_depurate (left, pos + 2);
 	return (ret);
+}
+
+int main(void)
+{
+	int fd = open("NO_LB.txt", O_RDONLY);
+	char *s = get_next_line(fd);
+	printf("%s\n", s);
+	return(0);
 }
