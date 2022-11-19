@@ -6,7 +6,7 @@
 /*   By: lagonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 15:12:01 by lagonzal          #+#    #+#             */
-/*   Updated: 2022/11/12 17:48:22 by lagonzal         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:49:03 by lagonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int		ft_strchr(char *s, char c);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *str);
 size_t	ft_strlen(char *s1);
-char	*ft_strcpy(char *s1, size_t n);
+char	*ft_strcpy(char *s1, int n);
 
 #endif

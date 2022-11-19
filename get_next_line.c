@@ -6,12 +6,19 @@
 /*   By: lagonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:13:06 by lagonzal          #+#    #+#             */
-/*   Updated: 2022/11/12 18:39:11 by lagonzal         ###   ########.fr       */
+/*   Updated: 2022/11/19 16:26:53 by lagonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
+
+char	*ft_clean(char *s)
+{
+	free(s);
+	s = NULL;
+	return(s);
+}
 
 int	ft_strchr(char *s, char c)
 {
@@ -31,27 +38,23 @@ char	*ft_read_file(int fd, char *left)
 {
 	int		readed;
 	char	*reader;
-	int		pos;
 
 	readed = 1;
-	pos = -1;
 	reader = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!reader)
 		return (NULL);
-	while (readed > 0 && pos == -1)
+	while (readed > 0 && ft_strchr(left, '\n') == -1)
 	{
 		readed = read(fd, reader, BUFFER_SIZE);
 		if (readed == -1)
-			return (free(reader), NULL);
-		if (readed == 0)
-			break;
+		{	
+			free(reader);
+			return (ft_clean(left));
+		}
 		reader[readed] = '\0';
 		left = ft_strjoin(left, reader);
 		if (!left)
-			return (free(reader), NULL);
-		pos = ft_strchr(left, '\n');
-		printf("pos is:%s\n", left);
-		//printf("pos is:%d\n", pos);
+			return (free(reader), ft_clean(left));
 	}
 	return(free(reader), left);
 }
@@ -60,8 +63,12 @@ char	*ft_depurate(char *left, int pos_lb)
 {
 	char	*dep;
 	
-	if (ft_strlen(&left[pos_lb]) == 0)
-		return (free(left), NULL);
+	if ((int)(ft_strlen(left)) <= pos_lb)
+	{
+		free(left);
+		left = NULL;
+		return (left);
+	}
 	dep = ft_strdup(&left[pos_lb]);
 	return (free(left), dep);
 }
@@ -71,32 +78,38 @@ char	*get_next_line(int fd)
 	char		*ret;
 	int			pos;
 
-	if (fd <= 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	left = ft_read_file(fd, left);
 	if (!left)
 		return(NULL);
+	ret = NULL;
 	pos = ft_strchr(left, '\n');
 	if (pos == -1)
 	{
-		if (left[0] == '\0')
-		{	
-			free(left);
-			return (NULL);
-		}
-		ret = ft_strdup(left);
+		if (left[0] != '\0')
+			ret = ft_strdup(left);
 		free(left);
+		left = NULL;
 		return (ret);
 	}
-	ret = ft_strcpy(left, pos + 2);
-	left = ft_depurate (left, pos + 2);
+	ret = ft_strcpy(left, pos + 1);
+	left = ft_depurate (left, pos + 1);
 	return (ret);
 }
 
-int main(void)
+/*int main(void)
 {
-	int fd = open("NO_LB.txt", O_RDONLY);
-	char *s = get_next_line(fd);
-	printf("%s\n", s);
+	int fd = open("test.txt", O_RDONLY);
+	char *str;
+	str = get_next_line(fd);
+	while (str)
+	{
+		printf("%s\n", str);
+		free (str);
+		str = get_next_line(fd);
+	}
+	//char *s = get_next_line(fd);
+	//printf("%s\n", s);
 	return(0);
-}
+}*/

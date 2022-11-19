@@ -6,7 +6,7 @@
 /*   By: lagonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:32:01 by lagonzal          #+#    #+#             */
-/*   Updated: 2022/11/12 18:50:57 by lagonzal         ###   ########.fr       */
+/*   Updated: 2022/11/19 16:15:58 by lagonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	free(s1);
 	if (!s3)
 		return (NULL);
-	//printf("first: %s\n", s3);
 	return (s3);
 }
 
@@ -84,17 +83,17 @@ char	*ft_strdup(char *orig)
 	return (dup);
 }
 
-char	*ft_strcpy(char *left, size_t end)
+char	*ft_strcpy(char *left, int end)
 {
 	char	*ret;
-	size_t		n;
+	int		n;
 
 	n = -1;
-	ret = malloc((end) * sizeof(char));
+	ret = malloc((end + 1) * sizeof(char));
 	if (!ret)
 		return (NULL);
+	ret[end] = '\0';
 	while (++n < end)
 		ret[n] = left[n];
-	ret[n] = '\0';
 	return (ret);
 }
