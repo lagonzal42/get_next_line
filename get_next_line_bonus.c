@@ -6,12 +6,12 @@
 /*   By: lagonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:13:06 by lagonzal          #+#    #+#             */
-/*   Updated: 2022/11/19 17:39:15 by lagonzal         ###   ########.fr       */
+/*   Updated: 2022/11/19 17:11:30 by lagonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <fcntl.h>
+#include "get_next_line_bonus.h"
+//#include <fcntl.h>
 
 char	*ft_clean(char *s)
 {
@@ -75,27 +75,27 @@ char	*ft_depurate(char *left, int pos_lb)
 
 char	*get_next_line(int fd)
 {
-	static char	*left;
+	static char	*left[10000];
 	char		*ret;
 	int			pos;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	left = ft_read_file(fd, left);
-	if (!left)
+	left[fd] = ft_read_file(fd, left[fd]);
+	if (!left[fd])
 		return (NULL);
 	ret = NULL;
-	pos = ft_strchr(left, '\n');
+	pos = ft_strchr(left[fd], '\n');
 	if (pos == -1)
 	{
-		if (left[0] != '\0')
-			ret = ft_strdup(left);
-		free(left);
-		left = NULL;
+		if (left[fd][0] != '\0')
+			ret = ft_strdup(left[fd]);
+		free(left[fd]);
+		left[fd] = NULL;
 		return (ret);
 	}
-	ret = ft_strcpy(left, pos + 1);
-	left = ft_depurate (left, pos + 1);
+	ret = ft_strcpy(left[fd], pos + 1);
+	left[fd] = ft_depurate (left[fd], pos + 1);
 	return (ret);
 }
 

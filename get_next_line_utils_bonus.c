@@ -6,11 +6,11 @@
 /*   By: lagonzal <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 12:32:01 by lagonzal          #+#    #+#             */
-/*   Updated: 2022/11/19 17:27:24 by lagonzal         ###   ########.fr       */
+/*   Updated: 2022/11/19 17:02:04 by lagonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char *s1)
 {
@@ -59,8 +59,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1)
 	{
 		s1 = malloc(1 * sizeof(char));
-		if (!s1)
-			return (NULL);
 		s1[0] = '\0';
 	}
 	if (!s2)
@@ -78,8 +76,6 @@ char	*ft_strdup(char *orig)
 	char	*dup;
 
 	dup = malloc(ft_strlen(orig) + 1);
-	if (!dup)
-		return (NULL);
 	n = -1;
 	while (orig[++n])
 		dup[n] = orig[n];
